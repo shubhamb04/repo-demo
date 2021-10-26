@@ -12,13 +12,15 @@ const getFullName = (userInfo) => {
 };
 
 const App = () => {
-  const [count, setCount] = useState(0);
+    const [count, setCount] = useState(0);
+    const [pageNumber, setPagenumber] = useState(1)
   const [user, setUser] = useState([]);
 
   function handleClick() {
     setCount(count + 1);
-    fetchUser().then((randomData) => {
-      setUser(randomData);
+    fetchUser(pageNumber).then((randomData) => {
+        setUser(randomData);
+        setPagenumber(randomData.info.page + 1)
     });
   }
   return (
