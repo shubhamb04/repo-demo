@@ -1,25 +1,51 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from "react";
+import fetchUser from "./fetchUser";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardMedia from "@mui/material/CardMedia";
+import Typography from "@mui/material/Typography";
+import { CardActionArea } from "@mui/material";
 
-function App() {
+const getFullName = (userInfo) => {
+  const { first, last } = userInfo;
+  return `${first} ${last}`;
+};
+
+const App = () => {
+  const [count, setCount] = useState(0);
+  const [user, setUser] = useState([]);
+
+  function handleClick() {
+    setCount(count + 1);
+    fetchUser().then((randomData) => {
+      setUser(randomData);
+    });
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <h1>{count}</h1>
+      <button onClick={handleClick}>Click</button>
+      {user.map((info, idx) => (
+        <div key={idx}>
+          <Card sx={{ maxWidth: 200 }}>
+            <CardActionArea>
+              <CardMedia
+                component="img"
+                // height="140"
+                image={info.picture.large}
+                alt={info.gender}
+              />
+              <CardContent>
+                <Typography gutterBottom variant="h5" component="div">
+                  {getFullName(info.name)}
+                </Typography>
+              </CardContent>
+            </CardActionArea>
+          </Card>
+        </div>
+      ))}
+    </>
   );
-}
+};
 
 export default App;
